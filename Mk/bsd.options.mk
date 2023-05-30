@@ -455,6 +455,19 @@ ALL_OPTIONS=	${OPTIONS_DEFINE}
 _OPTIONS_${target}?=
 .  endfor
 
+# Handle subpackages before the rest to be able to handle options helpers
+# with subpackages
+.  for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
+.    if ${PORT_OPTIONS:M${opt}}
+.      if defined(${opt}_SUBPACKAGES)
+SUBPACKAGES+=	${${opt}_SUBPACKAGES}
+.      endif
+.    else
+.      if defined(${opt}_SUBPACKAGES_OFF)
+SUBPACKAGES+=	${${opt}_SUBPACKAGES_OFF}
+.      endif
+.    endif
+.  endfor
 .  for opt in ${_REALLY_ALL_POSSIBLE_OPTIONS}
 # PLIST_SUB
 PLIST_SUB?=
@@ -540,6 +553,11 @@ ${flags}+=	${${opt}_${flags}}
 .        if defined(${opt}_${deptype}_DEPENDS)
 ${deptype}_DEPENDS+=	${${opt}_${deptype}_DEPENDS}
 .        endif
+.        for p in ${SUBPACKAGES}
+.          if defined(${opt}_${deptype}_DEPENDS.${p})
+${deptype}_DEPENDS.{p}+=	${${opt}_${deptype}_DEPENDS.${p}}
+.          endif
+.        endfor
 .      endfor
 .      for target in ${_OPTIONS_TARGETS}
 _target=	${target:C/:.*//}
@@ -611,6 +629,11 @@ ${flags}+=	${${opt}_${flags}_OFF}
 .        if defined(${opt}_${deptype}_DEPENDS_OFF)
 ${deptype}_DEPENDS+=	${${opt}_${deptype}_DEPENDS_OFF}
 .        endif
+.        for p in ${SUBPACKAGES}
+.          if defined(${opt}_${deptype}_DEPENDS_OFF.${p})
+${deptype}_DEPENDS.{p}+=	${${opt}_${deptype}_DEPENDS_OFF.${p}}
+.          endif
+.        endfor
 .      endfor
 .      for target in ${_OPTIONS_TARGETS}
 _target=	${target:C/:.*//}
