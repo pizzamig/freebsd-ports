@@ -2675,7 +2675,7 @@ _PKGDIR=	${.CURIDR}
 .    for sp in ${_PKGS}
 PKGNAME${_SP.${sp}}=	${sp}-${PKGVERSION}
 PKGNAMES+=				${PKGNAME${_SP.${sp}}}
-PKGFILES${_SP.${sp}}=	${_PKGDIR}/${PKGNAME${_SP.${sp}}}${PKG_SUFX}
+PKGFILE${_SP.${sp}}=	${_PKGDIR}/${PKGNAME${_SP.${sp}}}${PKG_SUFX}
 .    endfor
 _EXTRA_PACKAGE_TARGET_DEP+=	${_PKGDIR}
 .    for sp in ${_PKGS}
