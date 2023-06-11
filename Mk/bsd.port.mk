@@ -2660,7 +2660,7 @@ ${v}.${sp}?=	${$v}.${sp}
 _PKGMESSAGES.${sp}=		${PKGMESSAGE}.${sp}
 .        if !exists(${DESCR.${sp}})
 DESCR.${sp}=	${DESCR}
-DEV_WARNING+=	"${DESCR.${sp}} needs to point to an existing file."
+DEV_WARNING+=	"DESCR.${sp} needs to point to an existing file."
 .        endif
 COMMENT.${sp}?=	${COMMENT} (subpkg: ${sp})
 .      endfor
