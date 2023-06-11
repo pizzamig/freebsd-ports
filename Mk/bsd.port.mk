@@ -3505,7 +3505,7 @@ ${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST.${sp}} create-manifest ${WRKDIR}/pkg
 _EXTRA_PACKAGE_TARGET_DEP+=	${WRKDIR_PKGFILE${_SP.${sp}}}
 
 ${PKGFILE${_SP.${sp}}}: ${WRKDIR_PKGFILE${_SP.${sp}}}
-	@${LN} -f ${WRKDIR_PKGFILE${_SP.${sp}}} ${PKGFILE${_SP.${sp}}} 2 >/dev/null \
+	@${LN} -f ${WRKDIR_PKGFILE${_SP.${sp}}} ${PKGFILE${_SP.${sp}}} 2>/dev/null \
 		|| ${CP} -f ${WRKDIR_PKGFILE${_SP.${sp}}} ${PKGFILE${_SP.${sp}}}
 
 _EXTRA_PACKAGE_TARGET_DEP+=	${PKGFILE${_SP.${sp}}}
