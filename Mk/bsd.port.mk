@@ -3493,7 +3493,7 @@ ${_PLIST}.${sp}: ${TMPPLIST}
 
 ${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST}.${sp} create-manifest ${WRKDIR}/pkg
 	@echo "===>   Building ${PKGNAME${_SP.${sp}}}"
-	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR}.${sp} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
+	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR}.${sp} -p ${_PLIST}.${sp} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
 		exit 1; \
 	fi
@@ -4658,7 +4658,7 @@ generate-plist: ${WRKDIR}
 .      for sp in ${_PKGS}
 .        if ${sp} != ${PKGBASE}
 	@for file in ${PLIST_FILES${_SP.{sp}}}; do \
-		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's/^/@@${_P.${p}:S/^.//}@@/' >> ${TMPPLIST}; \
+		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's/^/@@${_SP.${sp}:S/^.//}@@/' >> ${TMPPLIST}; \
 	done
 .        endif
 .      endfor
@@ -4678,7 +4678,7 @@ generate-plist: ${WRKDIR}
 .      for sp in ${_PKGS}
 .        if ${sp} != ${PKGBASE}
 .          for dir in ${PLIST_DIRS${_SP.${sp}}}
-	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@@${_P.${p}:S/^.//}@@@dir ,' >> ${TMPPLIST}
+	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@@${_SP.${sp}:S/^.//}@@@dir ,' >> ${TMPPLIST}
 .          endfor
 .        endif
 .      endfor
