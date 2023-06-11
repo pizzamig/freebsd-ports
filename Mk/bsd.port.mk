@@ -2642,7 +2642,7 @@ DEV_ERROR+=	"SUBPACKAGES cannot subpackages that are not all [a-z0-9_]: ${_BAD_S
 .      if !defined(_PKGS.${sp})
 _PKGS.${sp}=	${PKGBASE}-${sp}
 .      endif
-_PKGS+=	${_PKGS.{sp}}
+_PKGS+=	${_PKGS.${sp}}
 _SP.${_PKGS.${sp}}=.${sp}
 .    endfor
 
@@ -2658,9 +2658,9 @@ _SUBPACKAGE_HELPERS_FILE=	DESCR PKGINSTALL PKGDEINSTALL PKGMESSAGE \
 ${v}.${sp}?=	${$v}.${sp}
 .        endfor
 _PKGMESSAGES.${sp}=		${PKGMESSAGE}.${sp}
-.        if !exist(${DESCR}.${sp})
+.        if !exists(${DESCR.${sp}})
 DESCR.${sp}=	${DESCR}
-DEV_WARNING+=	"DESCR.${sp} needs to point to an existing file."
+DEV_WARNING+=	"${DESCR.${sp}} needs to point to an existing file."
 .        endif
 COMMENT.${sp}?=	${COMMENT} (subpkg: ${sp})
 .      endfor
