@@ -1917,6 +1917,8 @@ CO_ENV+=	NO_PREFIX_RMDIR=1
 CO_ENV+=	NO_PREFIX_RMDIR=0
 .    endif
 
+METADIR=		${WRKDIR}/.metadir
+
 PKGPREINSTALL?=		${PKGDIR}/pkg-pre-install
 PKGPOSTINSTALL?=	${PKGDIR}/pkg-post-install
 PKGPREDEINSTALL?=	${PKGDIR}/pkg-pre-deinstall
@@ -2663,12 +2665,6 @@ DEV_WARNING+=	"DESCR.${sp} needs to point to an existing file."
 COMMENT.${sp}?=	${COMMENT} (subpkg: ${sp})
 .      endfor
 .    endif
-
-.    for sp in ${_PKGS}
-.      if !defined(METADIR.${sp})
-METADIR.${sp}=		${WRKDIR}/.metadir.${sp}
-.      endif
-.    endfor
 
 .    if exists(${PACKAGES})
 PACKAGES:=	${PACKAGES:S/:/\:/g}
@@ -3497,7 +3493,7 @@ ${_PLIST}.${sp}: ${TMPPLIST}
 
 ${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST}.${sp} create-manifest ${WRKDIR}/pkg
 	@echo "===>   Building ${PKGNAME${_SP.${sp}}}"
-	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR.${sp}} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
+	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR}.${sp} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
 		exit 1; \
 	fi
@@ -4391,7 +4387,7 @@ create-manifest.${sp}:
 			dp_LICENSE='${LICENSE:u:S/$/,/}'                      \
 			dp_LICENSE_COMB='${LICENSE_COMB}'                     \
 			dp_MAINTAINER='${MAINTAINER}'                         \
-			dp_METADIR='${METADIR.${sp}}'                         \
+			dp_METADIR='${METADIR}.${sp}'                         \
 			dp_NO_ARCH='${NO_ARCH}'                               \
 			dp_PKGBASE='${sp}'                                    \
 			dp_PKGDEINSTALL='${PKGDEINSTALL${_SP.${sp}}}'         \
@@ -4870,14 +4866,14 @@ fake-pkg.${sp}: ${_PLIST}.${sp}
 .          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
 .          endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR.${sp}} -f ${_PLIST}.${sp}
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
 .        else
 .          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
 .          endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR.${sp}} -f ${_PLIST}.${sp}
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
 .        endif
-	@${RM} -r ${METADIR.${sp}}
+	@${RM} -r ${METADIR}.${sp}
 .      endfor
 .    endif
 
