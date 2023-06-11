@@ -4659,10 +4659,12 @@ generate-plist: ${WRKDIR}
 	@for file in ${PLIST_FILES}; do \
 		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} >> ${TMPPLIST}; \
 	done
-.      for sp in ${_PKGS:[2..-1]}
+.      for sp in ${_PKGS}
+.        if ${sp} != ${PKGBASE}
 	@for file in ${PLIST_FILES${_SP.{sp}}}; do \
 		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's/^/@@${_P.${p}:S/^.//}@@/' >> ${TMPPLIST}; \
 	done
+.        endif
 .      endfor
 .      if !empty(PLIST)
 .        for f in ${PLIST}
@@ -4677,10 +4679,12 @@ generate-plist: ${WRKDIR}
 	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@dir ,' >> ${TMPPLIST}
 .      endfor
 
-.      for sp in ${_PKGS:[2..-1]}
-.        for dir in ${PLIST_DIRS${_SP.${sp}}}
+.      for sp in ${_PKGS}
+.        if ${sp} != ${PKGBASE}
+.          for dir in ${PLIST_DIRS${_SP.${sp}}}
 	@${ECHO_CMD} ${dir} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's,^,@@${_P.${p}:S/^.//}@@@dir ,' >> ${TMPPLIST}
-.        endfor
+.          endfor
+.        endif
 .      endfor
 .    endif
 
