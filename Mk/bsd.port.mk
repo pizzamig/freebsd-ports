@@ -2996,7 +2996,7 @@ all:
 	  PATCHDIR=${PATCHDIR} SCRIPTDIR=${SCRIPTDIR} \
 	  FILESDIR=${FILESDIR} PORTSDIR=${PORTSDIR} PREFIX=${PREFIX} \
 	  BUILD_DEPENDS="${BUILD_DEPENDS}" RUN_DEPENDS="${RUN_DEPENDS}" \
-	  CONFLICTS="${CONFLICTS}" \
+	  PKGPREFIXDIRCONFLICTS="${CONFLICTS}" \
 	${ALL_HOOK}
 .    endif
 
@@ -3488,14 +3488,14 @@ ${PKGOLDSIGFILE}: ${PKGLATESTREPOSITORY}
 
 # from here this will become a loop for subpackages
 .    for sp in ${_PKGS}
-${_PLIST.${sp}}: ${TMPPLIST}
+${_PLIST}.${sp}: ${TMPPLIST}
 	@if [ "${PKGBASE}" = "${sp}" ]; then \
 		${SED} "/^@comment /d; /@@/d" ${TMPPLIST} > ${.TARGET} ; \
 	else \
 		${SED} -n "s/@@${sp:S/${PKGBASE}-//}@@//p" ${TMPPLIST} > ${.TARGET} ; \
 	fi
 
-${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST.${sp}} create-manifest ${WRKDIR}/pkg
+${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST}.${sp} create-manifest ${WRKDIR}/pkg
 	@echo "===>   Building ${PKGNAME${_SP.${sp}}}"
 	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR.${sp}} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
@@ -4865,17 +4865,17 @@ STAGE_ARGS=	-N
 
 .      for sp in ${_PKGS}
 fake-pkg: fake-pkg.${sp}
-fake-pkg.${sp}: ${_PLIST.${sp}} ${METADIR.${sp}}
+fake-pkg.${sp}: ${_PLIST}.${sp}
 .        if defined(INSTALLS_DEPENDS)
 .          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
 .          endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR.${sp}} -f ${_PLIST.${sp}}
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR.${sp}} -f ${_PLIST}.${sp}
 .        else
 .          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
 .          endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST.${sp}}
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR.${sp}} -f ${_PLIST}.${sp}
 .        endif
 	@${RM} -r ${METADIR.${sp}}
 .      endfor
