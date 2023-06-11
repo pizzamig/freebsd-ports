@@ -1917,8 +1917,6 @@ CO_ENV+=	NO_PREFIX_RMDIR=1
 CO_ENV+=	NO_PREFIX_RMDIR=0
 .    endif
 
-METADIR=		${WRKDIR}/.metadir
-
 PKGPREINSTALL?=		${PKGDIR}/pkg-pre-install
 PKGPOSTINSTALL?=	${PKGDIR}/pkg-post-install
 PKGPREDEINSTALL?=	${PKGDIR}/pkg-pre-deinstall
@@ -2620,6 +2618,7 @@ PKGOLDLATESTFILE=		${PKGLATESTREPOSITORY}/${PKGBASE}.${PKG_COMPRESSION_FORMAT}
 PKGOLDSIGFILE=			${PKGLATESTREPOSITORY}/${PKGBASE}.${PKG_COMPRESSION_FORMAT}.sig
 .    endif
 
+
 _PKGS=	${PKGBASE}
 PORTS_FEATURES+=	SUBPACKAGES
 .    if defined(SUBPACKAGES)
@@ -2636,8 +2635,8 @@ DEV_ERROR+=	"SUBPACKAGES cannot subpackages that are not all [a-z0-9_]: ${_BAD_S
 .      endif
 .    endif
 .    for sp in ${SUBPACKAGES}
-# If a FRAMEWORK generated package needs to overrid its subpackage package name
-# it can do ot with this mechanism
+# If a FRAMEWORK generated package needs to override its subpackage package name
+# it can do it with this mechanism
 .      if !defined(_PKGS.${sp})
 _PKGS.${sp}=	${PKGBASE}-${sp}
 .      endif
@@ -2664,6 +2663,12 @@ DEV_WARNING+=	"DESCR.${sp} needs to point to an existing file."
 COMMENT.${sp}?=	${COMMENT} (subpkg: ${sp})
 .      endfor
 .    endif
+
+.    for sp in ${_PKGS}
+.      if !defined(METADIR.${sp})
+METADIR.${sp}=		${WRKDIR}/.metadir.${sp}
+.      endif
+.    endfor
 
 .    if exists(${PACKAGES})
 PACKAGES:=	${PACKAGES:S/:/\:/g}
@@ -3492,7 +3497,7 @@ ${_PLIST}.${sp}: ${TMPPLIST}
 
 ${WRKDIR_PKGFILE${_SP.${sp}}}:	${_PLIST}.${sp} create-manifest ${WRKDIR}/pkg
 	@echo "===>   Building ${PKGNAME${_SP.${sp}}}"
-	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
+	@if ! ${SETENV} ${PKG_ENV} ${PKG_CREATE} ${PKG_CREATE_ARGS} -m ${METADIR.${sp}} -p ${TMPPLIST} -o ${WRKDIR}/pkg ${PKGNAME}; then \
 		cd ${.CURDIR} && eval ${MAKE} delete-package >/dev/null; \
 		exit 1; \
 	fi
@@ -4856,19 +4861,19 @@ STAGE_ARGS=	-N
 
 .      for sp in ${_PKGS}
 fake-pkg: fake-pkg.${sp}
-fake-pkg.${sp}: ${_PLIST}.${sp} ${METADIR}.${sp}
+fake-pkg.${sp}: ${_PLIST}.${sp} ${METADIR.${sp}}
 .        if defined(INSTALLS_DEPENDS)
 .          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
 .          endif
-	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
+	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR.${sp}} -f ${_PLIST}.${sp}
 .        else
 .          if !defined(NO_PKG_REGISTER)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
 .          endif
 	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
 .        endif
-	@${RM} -r ${METADIR}.${sp}
+	@${RM} -r ${METADIR.${sp}}
 .      endfor
 .    endif
 
