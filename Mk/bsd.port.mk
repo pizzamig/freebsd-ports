@@ -2675,7 +2675,7 @@ PACKAGES:=	${PACKAGES:S/:/\:/g}
 _HAVE_PACKAGES=	yes
 _PKGDIR=	${PKGREPOSITORY}
 .    else
-_PKGDIR=	${.CURIDR}
+_PKGDIR=	${.CURDIR}
 .    endif
 .    for sp in ${_PKGS}
 PKGNAME${_SP.${sp}}=	${sp}-${PKGVERSION}
