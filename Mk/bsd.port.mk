@@ -4657,7 +4657,7 @@ generate-plist: ${WRKDIR}
 	done
 .      for sp in ${_PKGS}
 .        if ${sp} != ${PKGBASE}
-	@for file in ${PLIST_FILES${_SP.{sp}}}; do \
+	@for file in ${PLIST_FILES${_SP.${sp}}}; do \
 		${ECHO_CMD} $${file} | ${SED} ${PLIST_SUB_SANITIZED:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} -e 's/^/@@${_SP.${sp}:S/^.//}@@/' >> ${TMPPLIST}; \
 	done
 .        endif
