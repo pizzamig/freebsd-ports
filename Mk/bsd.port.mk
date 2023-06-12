@@ -2230,11 +2230,6 @@ ALL_TARGET?=		all
 INSTALL_TARGET?=	install
 INSTALL_TARGET+=	${LATE_INSTALL_ARGS}
 
-# Integrate with the license auditing framework
-.    if !defined (DISABLE_LICENSES)
-.include "${PORTSDIR}/Mk/bsd.licenses.mk"
-.    endif
-
 # Popular master sites
 .include "${PORTSDIR}/Mk/bsd.sites.mk"
 
@@ -2682,6 +2677,11 @@ _EXTRA_PACKAGE_TARGET_DEP+=	${_PKGDIR}
 .    for sp in ${_PKGS}
 WRKDIR_PKGFILE${_SP.${sp}}=	${WRKDIR}/pkg/${PKGNAME${_SP.${sp}}}${PKG_SUFX}
 .    endfor
+
+# Integrate with the license auditing framework
+.    if !defined (DISABLE_LICENSES)
+.include "${PORTSDIR}/Mk/bsd.licenses.mk"
+.    endif
 
 CONFIGURE_SCRIPT?=	configure
 CONFIGURE_CMD?=		./${CONFIGURE_SCRIPT}
