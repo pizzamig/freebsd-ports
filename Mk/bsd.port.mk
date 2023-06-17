@@ -4416,6 +4416,7 @@ package-depends:
 	@${PACKAGE-DEPENDS-LIST} | ${AWK} '{print $$1":"$$3}'
 
 .    for sp in ${_PKGS}
+actual-package-depends: actual-package-depends${_SP.${sp}}
 actual-package-depends${_SP.${sp}}:
 	@${ACTUAL-PACKAGE-DEPENDS${_SP.${sp}}}
 .    endfor
