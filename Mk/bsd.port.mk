@@ -2638,6 +2638,7 @@ DEV_ERROR+=	"SUBPACKAGES cannot subpackages that are not all [a-z0-9_]: ${_BAD_S
 _PKGS.${sp}=	${PKGBASE}-${sp}
 .      endif
 _PKGS+=	${_PKGS.${sp}}
+PKGBASE.${sp}=	${_PKGS.${sp}}
 _SP.${_PKGS.${sp}}=.${sp}
 .    endfor
 
