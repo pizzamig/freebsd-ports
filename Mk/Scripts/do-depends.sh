@@ -35,7 +35,7 @@ install_depends()
 	else
 		port_var_fetch "${origin}" "${depends_args}" \
 			PKGFILE.${subpkg} pkgfile \
-			PKGBASE ${subpkg} pkgbase
+			PKGBASE.${subpkg} pkgbase
 	fi
 
 	if [ -r "${pkgfile}" -a "${target}" = "${dp_DEPENDS_TARGET}" ]; then
