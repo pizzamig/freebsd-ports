@@ -4373,6 +4373,12 @@ PKG_NOTES_ENV+=	dp_PKG_NOTE_${note}=${PKG_NOTE_${note}:Q}
 .    endfor
 
 .    for sp in ${_PKGS}
+PKG_NOTES.${sp}=	${PKG_NOTES}
+PKG_NOTES_ENV.${sp}=	${PKG_NOTES_ENV}
+.      if ${sp} != ${PKGBASE}
+PKG_NOTES.${sp}+=	subpackage
+PKG_NOTES_ENV.${sp}+=	dp_PKG_NOTE_subpackage=${_SP.${sp}:S/^.//1}
+.      endif
 create-manifest: create-manifest.${sp}
 create-manifest.${sp}:
 	@${SETENV} \
@@ -4402,12 +4408,12 @@ create-manifest.${sp}:
 			dp_PKGVERSION='${PKGVERSION}'                         \
 			dp_PKG_BIN='${PKG_BIN}'                               \
 			dp_PKG_IGNORE_DEPENDS='${PKG_IGNORE_DEPENDS}'         \
-			dp_PKG_NOTES='${PKG_NOTES}'                           \
+			dp_PKG_NOTES='${PKG_NOTES.${sp}}'                     \
 			dp_PORT_OPTIONS='${PORT_OPTIONS}'                     \
 			dp_PREFIX='${PREFIX}'                                 \
 			dp_USERS='${USERS:u:S/$/,/}'                          \
 			dp_WWW='${WWW}'                                       \
-			${PKG_NOTES_ENV}                                      \
+			${PKG_NOTES_ENV.${sp}}                                \
 			${SH} ${SCRIPTSDIR}/create-manifest.sh
 .    endfor
 
