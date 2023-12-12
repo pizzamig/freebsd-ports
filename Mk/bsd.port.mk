@@ -4320,6 +4320,11 @@ PACKAGE-DEPENDS-LIST?= \
 	for dir in ${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,}; do \
 		unset flavor; \
 		case $${dir} in \
+		*~*) \
+			dir=$${dir%~*}; \
+			;; \
+		esac; \
+		case $${dir} in \
 		*@*) \
 			flavor=$${dir\#*@}; \
 			dir=$${dir%@*}; \
