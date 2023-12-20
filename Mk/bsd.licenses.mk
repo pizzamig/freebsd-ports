@@ -810,7 +810,7 @@ install-license.${sp}:
 	@${INSTALL_DATA} ${_LICENSE_FILE} ${STAGEDIR}${_LICENSE_DIR.${sp}}/${_LICENSE}
 .        else
 .          for lic in ${_LICENSE}
-	@${INSTALL_DATA} ${_LICENSE_FILE_${lic}} ${STAGEDIR}${_LICENSE_DIR}/${lic}
+	@${INSTALL_DATA} ${_LICENSE_FILE_${lic}} ${STAGEDIR}${_LICENSE_DIR.${sp}}/${lic}
 .          endfor
 .        endif
 .      endfor
