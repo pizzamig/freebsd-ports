@@ -152,6 +152,7 @@ _LICENSE_LIST_PORT_VARS=	PERMS NAME GROUPS
 # 					  bsd.port.mk to avoid creating LICENSE_{REQ,SEQ} for a
 # 					  few more targets only.
 
+_LICENSE_DIR?=		${PREFIX}/share/licenses/${PKGNAME}
 .    for sp in ${_PKGS}
 _LICENSE_DIR.${sp}?=		${PREFIX}/share/licenses/${PKGNAME${_SP.${sp}}}
 _LICENSE_CATALOG.${sp}?=	${_LICENSE_DIR.${sp}}/catalog.mk
