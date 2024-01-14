@@ -16,6 +16,7 @@ USE_GL=		opengl
 USE_QT=		base declarative
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
+SUBPACKAGES=	qdoc
 CMAKE_ARGS+=	-DClang_DIR:PATH="${LLVM_PREFIX}/lib/cmake/clang" \
 		-DLLVM_DIR:PATH="${LLVM_PREFIX}/lib/cmake/llvm"
 

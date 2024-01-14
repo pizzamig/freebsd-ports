@@ -5,7 +5,7 @@ bin/pixeltool6
 bin/qdbus6
 bin/qdbusviewer6
 bin/qdistancefieldgenerator6
-bin/qdoc6
+@@qdoc@@bin/qdoc6
 bin/qtdiag6
 bin/qtplugininfo6
 %%QT_INCDIR%%/QtDesigner/%%FULLVER%%/QtDesigner/private/abstractdialoggui_p.h
@@ -377,7 +377,7 @@ lib/cmake/Qt6UiTools/Qt6UiToolsVersionlessTargets.cmake
 %%QT_BINDIR%%/qdbus
 %%QT_BINDIR%%/qdbusviewer
 %%QT_BINDIR%%/qdistancefieldgenerator
-%%QT_BINDIR%%/qdoc
+@@qdoc@@%%QT_BINDIR%%/qdoc
 %%QT_BINDIR%%/qtdiag
 %%QT_BINDIR%%/qtdiag6
 %%QT_BINDIR%%/qtplugininfo
