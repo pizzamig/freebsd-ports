@@ -158,7 +158,7 @@ _USE_QT5_ONLY=		assistant buildtools concurrent core dbus \
 			widgets x11extras xml xmlpatterns
 
 _USE_QT6_ONLY=		5compat base coap graphs httpserver languageserver lottie pdf positioning \
-			quick3dphysics quickeffectmaker shadertools tools translations \
+			quick3dphysics quickeffectmaker shadertools tools-qdoc translations \
 			sqldriver-sqlite sqldriver-mysql sqldriver-psql sqldriver-odbc
 
 # Dependency tuples: _LIB should be preferred if possible.
@@ -375,6 +375,9 @@ qt-testlib_LIB=		libQt${_QT_LIBVER}Test.so
 
 qt-tools_PORT=		devel/${_QT_RELNAME}-tools
 qt-tools_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/lupdate
+
+qt-tools-qdoc_PORT=		devel/${_QT_RELNAME}-tools~qdoc
+qt-tools-qdoc_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qdoc
 
 qt-translations_PORT=	devel/${_QT_RELNAME}-translations
 qt-translations_PATH=	${LOCALBASE}/${QT_DATADIR_REL}/translations/qt_en.qm
