@@ -4836,17 +4836,42 @@ STAGE_ARGS=		-i ${STAGEDIR}
 STAGE_ARGS=	-N
 .      endif
 
-.      for sp in ${_PKGS}
+# Identify which subpackage needs to be installed
+_IPKGS=
+.      if empty(TARGET_SUBPACKAGE)
+_IPKGS=	${_PKGS}
+.      else
+.        for sp in ${TARGET_SUBPACKAGE}
+.          if ${sp} == "main"
+_IPKGS+=	${PKGBASE}
+.          else
+_IPKGS+=	${PKGBASE}-${sp}
+.          endif
+.        endfor
+.      endif
+# Add additional targets for subpackage dependency
+.      for sp in ${SUBPACKAGES}
+.        for dep in ${SELF_DEPENDS.${sp}}
+.          if ${dep} == "main"
+_DEPPKGS.${_PKGS.${sp}}+=	fake-pkg.${PKGBASE}
+.          else
+_DEPPKGS.${_PKGS.${sp}}+=	fake-pkg.${PKGBASE}-${dep}
+.          endif
+.        endfor
+.      endfor
+.      for sp in ${_IPKGS}
 fake-pkg: fake-pkg.${sp}
-fake-pkg.${sp}: ${_PLIST}.${sp}
+.      endfor
+.      for sp in ${_PKGS}
+fake-pkg.${sp}: ${_PLIST}.${sp} ${_DEPPKGS.${sp}}
 .        if defined(INSTALLS_DEPENDS)
 .          if !defined(NO_PKG_REGISTER)
-	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
+	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME${_SP.${sp}}} as automatic"
 .          endif
 	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} -d ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
 .        else
 .          if !defined(NO_PKG_REGISTER)
-	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME}"
+	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME${_SP.${sp}}}"
 .          endif
 	@${SETENV} ${PKG_ENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_REGISTER} ${STAGE_ARGS} -m ${METADIR}.${sp} -f ${_PLIST}.${sp}
 .        endif
