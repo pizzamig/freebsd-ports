@@ -522,6 +522,12 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  installed.
 #				  Useful for dynamically generated data files.
 #
+# By default, a port install its package and all its subpacakges.
+# Set the following to install only a subset of the port
+#
+# TARGET_SUBPACKAGES
+#				- A comma separated list of subpackages to install.
+#
 # Default targets and their behaviors:
 #
 # fetch			- Retrieves missing ${DISTFILES} and ${PATCHFILES} for this
