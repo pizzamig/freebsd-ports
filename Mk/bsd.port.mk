@@ -4838,10 +4838,11 @@ STAGE_ARGS=	-N
 
 # Identify which subpackage needs to be installed
 _IPKGS=
-.      if empty(TARGET_SUBPACKAGE)
+.      if empty(TARGET_SUBPACKAGES)
 _IPKGS=	${_PKGS}
 .      else
-.        for sp in ${TARGET_SUBPACKAGE}
+_TARGET_SUBPACKAGES=	${TARGET_SUBPACKAGES:S/,/ /g}
+.        for sp in ${_TARGET_SUBPACKAGES}
 .          if ${sp} == "main"
 _IPKGS+=	${PKGBASE}
 .          else
