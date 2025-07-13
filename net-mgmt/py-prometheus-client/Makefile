@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=17.9.0:devel/py-twisted@${PY_FLAVOR
 
 USES=	python
 
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist pep517
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	prometheus
